@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kibana
-  namespace: default
+  namespace: es
   labels:
     application: logging
     component: kibana
@@ -20,13 +20,13 @@ spec:
       containers:
       - name: kibana
         imagePullPolicy: IfNotPresent
-        image: docker.elastic.co/kibana/kibana-oss:6.2.3
+        image: docker.geexfinance.com/kibana/kibana-oss:6.2.3
         resources:
           requests:
-            memory: 2Gi
+            memory: 500Mi
             cpu: 1
           limits:
-            memory: 2Gi
+            memory: 1Gi
             cpu: 1
         env:
         - name: NODE_NAME
@@ -36,7 +36,7 @@ spec:
         - name: SERVER_NAME
           value: "kibana.test.com"
         - name: ELASTICSEARCH_URL
-          value: "http://es-ingest:9200"
+          value: "http://es-master:9200"
         ports:
         - containerPort: 5601
           name: http
@@ -60,3 +60,5 @@ spec:
         configMap:
           name: kibana-config
       restartPolicy: Always
+      imagePullSecrets:
+        - name: geexregistrykey

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: es-master
-  namespace: default
+  namespace: es
   labels:
     application: logging
     component: elasticsearch
@@ -46,13 +46,13 @@ spec:
             add:
               - IPC_LOCK
               - SYS_RESOURCE
-        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
+        image: docker.geexfinance.com/elasticsearch/elasticsearch-oss:6.2.3
         resources:
           requests:
-            memory: 2Gi
+            memory: 512Mi
             cpu: 1
           limits:
-            memory: 4Gi
+            memory: 2Gi
             cpu: 1
         env:
         - name: NODE_NAME
@@ -62,10 +62,13 @@ spec:
         - name: MASTER_DISCOVERY_HOST
           value: "es-master"
         - name: ES_JAVA_OPTS
-          value: "-Xms2g -Xmx2g"
+          value: "-Xms1G -Xmx1G"
         ports:
         - containerPort: 9300
           name: transport
+          protocol: TCP
+        - containerPort: 9200
+          name: http
           protocol: TCP
         readinessProbe:
           tcpSocket:
@@ -86,3 +89,5 @@ spec:
         configMap:
           name: es-master
       restartPolicy: Always
+      imagePullSecrets:
+        - name: geexregistrykey

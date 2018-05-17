@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: es-data
-  namespace: default
+  namespace: es
   labels:
     application: logging
     component: elasticsearch
@@ -22,6 +22,4 @@ data:
     node.master: false
     node.ingest: false
     node.data: true
-
-    bootstrap.mlockall: true
 
