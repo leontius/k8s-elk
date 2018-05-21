@@ -2,12 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: logstash-syslog-udp
-  namespace: default
+  namespace: es
   labels:
     application: logging
     component: logstash
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 514
     targetPort: 514
